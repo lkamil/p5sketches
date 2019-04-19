@@ -22,12 +22,16 @@ function draw() {
 	}
 
 	if (position.y < windowHeight / 2) {
-		velocity.y += 2;
+		if (velocity.y < 40) {
+			velocity.y += 2;
+		}
 	}
 
 
 	if (position.y > windowHeight / 2) {
-		velocity.y -= 2;
+		if (velocity.y > -40) {
+			velocity.y -= 2;
+		}
 	}
 
 	strokeWeight(1);
