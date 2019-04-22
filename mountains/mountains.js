@@ -1,4 +1,4 @@
-// let amount;
+let amount;
 // let scl;
 // let offset;
 let layerHeight;
@@ -7,60 +7,66 @@ let prevY;
 // let color1;
 // let color2;
 
+let inc;
+let start;
+
+p5.disableFriendlyErrors = true;
+
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	background(255);
 
-	layerHeight = height / 12;
+	amount = 8;
+	layerHeight = height / amount;
 	console.log(layerHeight);
 
-	drawMountains()
+	//drawMountains()
 	// drawMountainRange(0, 600);
+	color1 = color(255);
+	color2 = color(0);
+
+	start = 0.0;
+	inc = 0.05;
+
 }
 
 function draw() {
+	background(255);
+	drawMountains(color1, color2);
+
+	start += inc;
 }
 
-function drawMountains() {
-	// color1 = color(255, 255, 255, 150);
-	// color2 = color(0, 0, 0, 150);
+function drawMountains(c1, c2) {
 
-	// line(20, 10, 1000, 300);
-
-	// for(y = 0; y < height; y += offset) {
-	// 	fill(255, 0, 0, 50);
-	// 	noStroke();
-	// 	//rect(0, y, width, layerHeight);
-	// 	setGradient(0, y, width, layerHeight, color1, color2)
-	// }
-
-	// line(20, 10, 1000, 300);
-	//  setGradient(0, 0, width, layerHeight, color1, color2);
-	//  stroke(0);
+	let speed;
+	let amountInter = 0;
 	prevY = 0;
+	speed = 0.04;
 	for (let y = layerHeight; y < height; y += layerHeight) {
-		drawMountainRange(prevY, y, y);
+
+		let inter = 1 / amount + amountInter;
+		let c = lerpColor(c1, c2, inter);
+
+		
+		drawMountainRange(prevY, y, (y + start) + 1000, c, speed);
 		prevY = y;
+
+		amountInter += 1 / amount;
+		speed -= 0.0055;
 	}
 	 
 }
 
-function drawMountainRange(y0, y1, xoff) {
-	for (let x = 0; x < width; x++){
+function drawMountainRange(y0, y1, xoff, c, speed) {
+
+	for (let x = 0; x < width; x += 2) {
 		let noiseHeight = noise(xoff) * (y1-y0) * 1.5 + y0;
-		console.log(noiseHeight);
-		stroke(0, 50);
+		// console.log(noiseHeight);
+		stroke(c);
+		strokeWeight(2);
+		// strokeCap(SQUARE);
+		smooth();
 		line(x, noiseHeight, x, height)
-
-		xoff += 0.01;
+		xoff += speed;
 	}
-}
-
-function setGradient(x, y, w, h, c1, c2) {
-	for(let i = y; i <= y + h; i += 1) {
-		let inter = map(i, y, y + h, 0, 1);
-     	let c = lerpColor(c1, c2, inter);
-     	stroke(c);
-    	line(x, i, x + w, i);
-    }
 }
