@@ -48,7 +48,7 @@ function Drop(x, y) {
 	this.speed = 1;
 	console.log("Drop created")
 	this.fall = function() {
-		this.y += this.speed;
+		this.y += this.speed + this.y * (0.005);
 		noFill;
 		line(this.x, this.y, this.x, this.y + 10);
 	}
