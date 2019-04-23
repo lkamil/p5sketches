@@ -1,0 +1,3 @@
+function Drop() {
+	this.x = 
+}

@@ -11,9 +11,18 @@ let sizey = 600;
 
 function setup() {
 	createCanvas(sizex, sizey);
-	background(200);
-	cols = sizex / scl;
-	rows = sizey / scl;
+	
+	amount = 8;
+	layerHeight = height / amount;
+	console.log(layerHeight);
+
+	//drawMountains()
+	// drawMountainRange(0, 600);
+	color1 = color(255);
+	color2 = color(0);
+
+	start = 0.0;
+	inc = 0.05;
 }
 
 function draw() {
