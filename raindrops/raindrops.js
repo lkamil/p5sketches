@@ -10,11 +10,7 @@ function setup() {
 }
 
 function draw() {
-	drawDrops();
 
-}
-
-function drawDrops() {
 	background(255);
 
 	if (frameCount % 20 == 0){
@@ -30,7 +26,21 @@ function drawDrops() {
 	for (let i = 0; i < drops.length; i += 1) {
 		drops[i].fall();
 	}
+
+	// console.log(drops);
 }
+
+function mouseMoved() {
+	// let newDrop = new Drop(mouseX, mouseY);
+	// drops.push(newDrop);
+
+	// if (drops.length > 1000) {
+	// 	drops.shift(); // Remove first array element
+	// }
+}
+
+
+
 
 function Drop(x, y) {
 	this.x = x + random(-50, 50);
