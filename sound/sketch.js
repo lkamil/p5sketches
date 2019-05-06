@@ -1,13 +1,18 @@
+// idea: lines fade out (fall down) after a while
+
 let song;
 let button;
 let jumpButton;
 let amp;
 let xoff;
+let x, y;
+let speedX;
+let speedY;
 
 function setup() {
-	createCanvas(300, 300);
+	createCanvas(1000, 800);
 
-	background(255);
+	background(220);
 	song = loadSound("libertango.mp3", loaded);
 	amp = new p5.Amplitude(); // this listens to the sound of the sketch
 
@@ -17,8 +22,11 @@ function setup() {
 	// song.addCue(6.0, changeBackground, color(200,200,255));
 	// song.addCue(6.0, changeBackground, color(200,100,255));
 
-	xoff = 0.0
-
+	xoff = 0.0;
+	x = width/100;
+	y = height/ 50;
+	speedX = 2.5;
+	speedY = 0.06;
 }
 
 function loaded() {
@@ -54,17 +62,48 @@ function jump() {
 
 function draw() {
 	//background(200,100,255);
-	let r = noise(xoff) * 50 + 200;
-	let g = noise(xoff + 200) * 150 +100;
-	let b = noise(xoff + 500) * 200 + 50;
+	if (song.isPlaying()) {
+		drawEllipse();
+	}
+}
 
-	fill(r, g, b, 10);
-	noStroke();
+function drawEllipse() {
+	
+	//strokeWeight(0.5);
+	//console.log(amp.getLevel());
 	let vol = amp.getLevel();
-	let diam = map(vol, 0, 0.2, 50, 200)
-	ellipse(width / 2, height / 2, diam, diam);
+	let diam = map(vol, 0, 0.2, 1.5, 2.5)
 
-	xoff += 3;
+	let r = map(vol, 0, 0.2, 155, 25);; // noise(xoff) * 100 + map(vol, 0, 0.2, 10, 150);
+	let g = map(vol, 0, 0.2, 155, 25);; //noise(300 + xoff) * 100 + map(vol, 0, 0.2, 10, 150);
+	let b = 255;// noise(500 + xoff) * 100 + map(vol, 0, 0.2, 70, 150);
+
+	speedDiffX = map(vol, 0, 0.3, 0, 1);
+	speedDiffY = map(vol, 0, 0.3, 0, 1)
+
+	stroke(r, g, b, 100);
+	strokeWeight(1);
+	noFill();
+
+	// move ellipse
+	// speedX = 1;
+	// speedY = 0.2;
+
+	if ((x > width) || (x < 0)) {
+		speedX *= -1;
+		speedY += 0.02;
+		console.log(speedX);
+	}
+	if ((y > height) || (y < 0))  {
+		speedY *= -1;
+	}
+	x += sin(speedX * speedDiffX * 4) * diam;
+	y += sin(speedY * speedDiffY * 2) * diam;
+	// console.log(speedDiffX + speedX);
+
+	line(x, y, x, ((y * speedDiffY) * 3));
+
+	xoff += 0.01;
 }
 
 
